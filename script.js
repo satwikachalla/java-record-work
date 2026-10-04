@@ -3133,6 +3133,351 @@ public class PaymentDemo {
         output: null
       }
     ]
+  },
+
+  // =========================================================
+  // WEEK 10
+  // =========================================================
+  {
+    id: 10,
+    title: "Week 10",
+    subtitle: "Exception Handling and Byte Streams",
+    programs: [
+      { title: "Handling Division by Zero", description: "Demonstrate exception handling using try and catch by handling division by zero.", code: `public class Arithmetic {
+    public static void main(String[] args) {
+        try {
+            int a = 10, b = 0;
+            System.out.println(a / b);
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero");
+        }
+    }
+}` },
+      { title: "Demonstrating Common Exceptions", description: "Demonstrate ArithmeticException, ArrayIndexOutOfBoundsException, and NullPointerException.", code: `public class ExceptionTypes {
+    public static void main(String[] args) {
+        try { System.out.println(10 / 0); }
+        catch (ArithmeticException e) { System.out.println("ArithmeticException: " + e); }
+
+        try { int[] a = {10, 20, 30}; System.out.println(a[5]); }
+        catch (ArrayIndexOutOfBoundsException e) { System.out.println("ArrayIndexOutOfBoundsException: " + e); }
+
+        try { String s = null; System.out.println(s.length()); }
+        catch (NullPointerException e) { System.out.println("NullPointerException: " + e); }
+    }
+}` },
+      { title: "Observing an Uncaught Exception", description: "Allow an exception to go uncaught and observe the JVM message and stack trace.", code: `public class UncaughtException {
+    public static void main(String[] args) {
+        int a = 10, b = 0;
+        int result = a / b;
+        System.out.println("Result: " + result);
+    }
+}` },
+      { title: "Using Multiple Catch Clauses", description: "Handle different exceptions with separate catch clauses.", code: `public class MultipleCatch {
+    public static void main(String[] args) {
+        try {
+            int[] numbers = {10, 20, 30};
+            System.out.println(numbers[5] / 0);
+        } catch (ArithmeticException e) {
+            System.out.println("ArithmeticException occurred.");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("ArrayIndexOutOfBoundsException occurred.");
+        } catch (Exception e) {
+            System.out.println("Some other exception occurred.");
+        }
+    }
+}` },
+      { title: "Explicitly Throwing an Exception", description: "Use throw to generate an exception when a condition is violated.", code: `public class ThrowDemo {
+    public static void main(String[] args) {
+        int age = 15;
+        try {
+            if (age < 18) throw new IllegalArgumentException("Age must be 18 or above.");
+            System.out.println("Eligible to vote.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}` },
+      { title: "Propagating an Exception with throws", description: "Use throws to propagate an exception to the calling method.", code: `public class ThrowsDemo {
+    static void divide(int a, int b) throws ArithmeticException {
+        System.out.println("Result = " + (a / b));
+    }
+    public static void main(String[] args) {
+        try { divide(10, 0); }
+        catch (ArithmeticException e) {
+            System.out.println("Exception handled in main: " + e);
+        }
+    }
+}` },
+      { title: "Creating a User-Defined Exception", description: "Create a checked exception by extending the Exception class and handle it.", code: `class InvalidAgeException extends Exception {
+    InvalidAgeException(String message) { super(message); }
+}
+public class CustomExceptionDemo {
+    static void checkAge(int age) throws InvalidAgeException {
+        if (age < 18) throw new InvalidAgeException("Age must be at least 18.");
+        System.out.println("Age accepted.");
+    }
+    public static void main(String[] args) {
+        try { checkAge(16); }
+        catch (InvalidAgeException e) { System.out.println("Error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Validating Student Marks", description: "Validate marks from 0 to 100 and throw a custom exception for an invalid value.", code: `class InvalidMarksException extends Exception {
+    InvalidMarksException(String message) { super(message); }
+}
+public class MarksValidation {
+    static void validate(int marks) throws InvalidMarksException {
+        if (marks < 0 || marks > 100) throw new InvalidMarksException("Marks must be between 0 and 100.");
+        System.out.println("Valid marks: " + marks);
+    }
+    public static void main(String[] args) {
+        try { validate(105); }
+        catch (InvalidMarksException e) { System.out.println("Invalid marks: " + e.getMessage()); }
+    }
+}` },
+      { title: "Combining Exception Handling Features", description: "Use try, multiple catch clauses, throw, throws, and finally in one application.", code: `public class ExceptionFeatures {
+    static void check(int value) throws IllegalArgumentException {
+        if (value < 0) throw new IllegalArgumentException("Value cannot be negative.");
+        System.out.println(100 / value);
+    }
+    public static void main(String[] args) {
+        try { check(-2); }
+        catch (IllegalArgumentException e) { System.out.println("Invalid argument: " + e.getMessage()); }
+        catch (ArithmeticException e) { System.out.println("Cannot divide by zero."); }
+        finally { System.out.println("Finally block executed."); }
+    }
+}` },
+      { title: "Reading and Writing Bytes with Streams", description: "Use InputStream and OutputStream to read bytes from an input source and write them to an output destination.", code: `import java.io.*;
+public class StreamBytes {
+    public static void main(String[] args) throws IOException {
+        byte[] source = "Hello, byte streams!".getBytes();
+        try (InputStream in = new ByteArrayInputStream(source);
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            int value;
+            while ((value = in.read()) != -1) out.write(value);
+            System.out.println(new String(out.toByteArray()));
+        }
+    }
+}` },
+      { title: "Reading a File Byte by Byte", description: "Read a file using FileInputStream one byte at a time and display its contents.", code: `import java.io.*;
+public class ReadBytes {
+    public static void main(String[] args) {
+        try (FileInputStream in = new FileInputStream("input.txt")) {
+            int value;
+            while ((value = in.read()) != -1) System.out.print((char) value);
+        } catch (IOException e) { System.out.println("Read error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Writing Data with FileOutputStream", description: "Write data to a file with FileOutputStream and read it back to verify.", code: `import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+public class WriteBytes {
+    public static void main(String[] args) {
+        byte[] data = "Java byte output".getBytes();
+        try (FileOutputStream out = new FileOutputStream("output.txt")) {
+            out.write(data);
+        } catch (IOException e) { System.out.println("Write error: " + e.getMessage()); return; }
+        try { System.out.println(Files.readString(Path.of("output.txt"))); }
+        catch (IOException e) { System.out.println("Verify error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Copying a File with Byte Streams", description: "Copy one file to another using FileInputStream and FileOutputStream.", code: `import java.io.*;
+public class CopyBytes {
+    public static void main(String[] args) {
+        try (FileInputStream in = new FileInputStream("source.txt");
+             FileOutputStream out = new FileOutputStream("copy.txt")) {
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
+            System.out.println("File copied successfully.");
+        } catch (IOException e) { System.out.println("Copy error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Copying an Image with Byte Streams", description: "Copy an image using byte streams and handle FileNotFoundException and IOException, closing streams in finally.", code: `import java.io.*;
+public class CopyImage {
+    public static void main(String[] args) {
+        FileInputStream in = null;
+        FileOutputStream out = null;
+        try {
+            in = new FileInputStream("photo.jpg");
+            out = new FileOutputStream("photo-copy.jpg");
+            byte[] buffer = new byte[4096];
+            int count;
+            while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
+            System.out.println("Image copied successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e.getMessage());
+        } finally {
+            try { if (in != null) in.close(); } catch (IOException e) { System.out.println("Input close error."); }
+            try { if (out != null) out.close(); } catch (IOException e) { System.out.println("Output close error."); }
+        }
+    }
+}` }
+    ]
+  },
+  // =========================================================
+  // WEEK 11
+  // =========================================================
+  {
+    id: 11,
+    title: "Week 11",
+    subtitle: "Character Streams and Multithreaded Programming",
+    programs: [
+      { title: "Keyboard Input with Reader and Writer", description: "Read characters from the keyboard with Reader and display them using Writer.", code: `import java.io.*;
+public class ReaderWriterDemo {
+    public static void main(String[] args) throws IOException {
+        Reader reader = new InputStreamReader(System.in);
+        Writer writer = new OutputStreamWriter(System.out);
+        writer.write("Enter text: "); writer.flush();
+        int ch;
+        while ((ch = reader.read()) != -1 && ch != '\\n' && ch != '\\r') writer.write(ch);
+        writer.write(System.lineSeparator()); writer.flush();
+    }
+}` },
+      { title: "Reading a Text File with FileReader", description: "Read and display the contents of a text file using FileReader.", code: `import java.io.*;
+public class ReadText {
+    public static void main(String[] args) {
+        try (FileReader reader = new FileReader("input.txt")) {
+            int ch;
+            while ((ch = reader.read()) != -1) System.out.print((char) ch);
+        } catch (IOException e) { System.out.println("Read error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Writing Text with FileWriter", description: "Write text into a file using FileWriter.", code: `import java.io.*;
+public class WriteText {
+    public static void main(String[] args) {
+        try (FileWriter writer = new FileWriter("output.txt")) {
+            writer.write("Character streams handle text.");
+            System.out.println("Text written to output.txt");
+        } catch (IOException e) { System.out.println("Write error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Copying Text with FileReader and FileWriter", description: "Copy one text file to another using character streams.", code: `import java.io.*;
+public class CopyText {
+    public static void main(String[] args) {
+        try (FileReader reader = new FileReader("source.txt");
+             FileWriter writer = new FileWriter("copy.txt")) {
+            char[] buffer = new char[1024];
+            int count;
+            while ((count = reader.read(buffer)) != -1) writer.write(buffer, 0, count);
+            System.out.println("Text file copied successfully.");
+        } catch (IOException e) { System.out.println("Copy error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Counting Characters, Words, and Lines", description: "Count characters, words, and lines in a text file using character streams.", code: `import java.io.*;
+public class FileCounts {
+    public static void main(String[] args) {
+        int chars = 0, words = 0, lines = 0;
+        boolean inWord = false, hasLineContent = false;
+        try (Reader reader = new FileReader("input.txt")) {
+            int ch;
+            while ((ch = reader.read()) != -1) {
+                chars++;
+                if (ch == '\\n') { lines++; hasLineContent = false; }
+                else if (ch != '\\r') hasLineContent = true;
+                if (Character.isWhitespace(ch)) inWord = false;
+                else if (!inWord) { words++; inWord = true; }
+            }
+            if (hasLineContent) lines++;
+            System.out.println("Characters: " + chars);
+            System.out.println("Words: " + words);
+            System.out.println("Lines: " + lines);
+        } catch (IOException e) { System.out.println("Read error: " + e.getMessage()); }
+    }
+}` },
+      { title: "Inspecting the Main Thread", description: "Display the main thread's name, priority, and state.", code: `public class MainThreadInfo {
+    public static void main(String[] args) {
+        Thread t = Thread.currentThread();
+        System.out.println("Name: " + t.getName());
+        System.out.println("Priority: " + t.getPriority());
+        System.out.println("State: " + t.getState());
+    }
+}` },
+      { title: "Creating a Thread by Extending Thread", description: "Create and start a thread by extending the Thread class.", code: `class WorkerThread extends Thread {
+    public void run() { System.out.println("Child thread is running."); }
+}
+public class ExtendThreadDemo {
+    public static void main(String[] args) throws InterruptedException {
+        WorkerThread t = new WorkerThread();
+        t.start();
+        t.join();
+        System.out.println("Main thread is running.");
+    }
+}` },
+      { title: "Creating a Thread with Runnable", description: "Create and start a thread by implementing the Runnable interface.", code: `class Task implements Runnable {
+    public void run() { System.out.println("Runnable task is running."); }
+}
+public class RunnableDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Thread t = new Thread(new Task());
+        t.start();
+        t.join();
+        System.out.println("Main thread is running.");
+    }
+}` },
+      { title: "Running Multiple Threads Concurrently", description: "Create multiple threads and demonstrate their concurrent execution.", code: `class NumberTask extends Thread {
+    NumberTask(String name) { super(name); }
+    public void run() {
+        for (int i = 1; i <= 3; i++) System.out.println(getName() + " : " + i);
+    }
+}
+public class ConcurrentDemo {
+    public static void main(String[] args) throws InterruptedException {
+        NumberTask a = new NumberTask("Thread-A"), b = new NumberTask("Thread-B");
+        a.start(); b.start();
+        a.join(); b.join();
+        System.out.println("Both threads completed.");
+    }
+}` },
+      { title: "Checking a Thread with isAlive()", description: "Use isAlive() to check whether a thread is running.", code: `class ShortTask extends Thread {
+    public void run() {
+        System.out.println("Task started.");
+        try { Thread.sleep(300); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        System.out.println("Task finished.");
+    }
+}
+public class IsAliveDemo {
+    public static void main(String[] args) throws InterruptedException {
+        ShortTask t = new ShortTask();
+        System.out.println("Before start: " + t.isAlive());
+        t.start();
+        System.out.println("After start: " + t.isAlive());
+        t.join();
+        System.out.println("After completion: " + t.isAlive());
+    }
+}` },
+      { title: "Waiting for a Thread with join()", description: "Use join() to make one thread wait until another thread completes.", code: `class MessageTask extends Thread {
+    public void run() { System.out.println("Worker is processing."); }
+}
+public class JoinDemo {
+    public static void main(String[] args) throws InterruptedException {
+        MessageTask worker = new MessageTask();
+        worker.start();
+        worker.join();
+        System.out.println("Worker completed; main continues.");
+    }
+}` },
+      { title: "Controlling Threads with isAlive() and join()", description: "Use isAlive() and join() to check multiple threads and ensure they finish before continuing.", code: `class Job extends Thread {
+    Job(String name) { super(name); }
+    public void run() {
+        System.out.println(getName() + " started.");
+        try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        System.out.println(getName() + " finished.");
+    }
+}
+public class ThreadControlDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Job a = new Job("Job-A"), b = new Job("Job-B");
+        a.start(); b.start();
+        System.out.println("Job-A alive: " + a.isAlive());
+        a.join(); b.join();
+        System.out.println("Job-A alive after join: " + a.isAlive());
+        System.out.println("Job-B alive after join: " + b.isAlive());
+        System.out.println("All jobs completed.");
+    }
+}` }
+    ]
   }
 ];
 
@@ -3517,6 +3862,70 @@ Labrador barks`,
 Enter choice: 2
 Enter amount: 1500
 Paid Rs. 1500.0 using UPI`
+  ,
+  "10-0": `Cannot divide by zero`,
+  "10-1": `ArithmeticException: java.lang.ArithmeticException: / by zero
+ArrayIndexOutOfBoundsException: java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 3
+NullPointerException: java.lang.NullPointerException: Cannot invoke "String.length()" because "<local1>" is null`,
+  "10-2": `Exception in thread "main" java.lang.ArithmeticException: / by zero
+    at UncaughtException.main(UncaughtException.java:4)
+The line number may differ depending on the file layout.`,
+  "10-3": `ArrayIndexOutOfBoundsException occurred.`,
+  "10-4": `Exception: Age must be 18 or above.`,
+  "10-5": `Exception handled in main: java.lang.ArithmeticException: / by zero`,
+  "10-6": `Error: Age must be at least 18.`,
+  "10-7": `Invalid marks: Marks must be between 0 and 100.`,
+  "10-8": `Invalid argument: Value cannot be negative.
+Finally block executed.`,
+  "10-9": `Hello, byte streams!`,
+  "10-10": `Displays the contents of input.txt byte by byte.`,
+  "10-11": `Text written to output.txt
+Java byte output`,
+  "10-12": `File copied successfully.`,
+  "10-13": `Image copied successfully.`,
+  "11-0": `Enter text: Hello Java
+Hello Java`,
+  "11-1": `Displays the text contained in input.txt.`,
+  "11-2": `Text written to output.txt`,
+  "11-3": `Text file copied successfully.`,
+  "11-4": `For input.txt containing:
+Java is fun.
+Streams read text.
+
+Characters: 32
+Words: 6
+Lines: 2`,
+  "11-5": `Name: main
+Priority: 5
+State: RUNNABLE`,
+  "11-6": `Child thread is running.
+Main thread is running.`,
+  "11-7": `Runnable task is running.
+Main thread is running.`,
+  "11-8": `One possible output (thread order may vary):
+Thread-A : 1
+Thread-B : 1
+Thread-A : 2
+Thread-B : 2
+Thread-A : 3
+Thread-B : 3
+Both threads completed.`,
+  "11-9": `Before start: false
+After start: true
+Task started.
+Task finished.
+After completion: false`,
+  "11-10": `Worker is processing.
+Worker completed; main continues.`,
+  "11-11": `One possible output:
+Job-A alive: true
+Job-A started.
+Job-B started.
+Job-A finished.
+Job-B finished.
+Job-A alive after join: false
+Job-B alive after join: false
+All jobs completed.`
 };
 
 function getGeneratedOutput(weekId, index) {
@@ -3990,6 +4399,26 @@ function showProgram(weekId, index) {
         alt="Program output"
         onclick="openImage(this.src)"
       >
+    `
+
+    : weekId === 1 && index === 0
+    ? `
+      <div class="output-placeholder">
+        <div class="comparison-output">
+          <div class="terminal-prompt">$ java LanguageComparison</div>
+          <table class="comparison-table">
+            <thead><tr><th>Language</th><th>Programming style</th><th>Strengths</th><th>Common uses</th></tr></thead>
+            <tbody>
+              <tr><th>Java</th><td>Class-based, object-oriented; runs on the JVM</td><td>Portable, secure, with strong tooling</td><td>Large-scale and enterprise applications</td></tr>
+              <tr><th>C</th><td>Procedural, compiled language</td><td>Fast, efficient, with low-level control; manual memory management</td><td>System programming and embedded software</td></tr>
+              <tr><th>C++</th><td>Extends C with object-oriented and generic programming</td><td>High performance with low-level control</td><td>Games and real-time software</td></tr>
+              <tr><th>Python</th><td>High-level, open-source, multi-paradigm; simple syntax</td><td>Readable and productive, with a broad library ecosystem</td><td>Automation, data science, AI and web development</td></tr>
+              <tr><th>JavaScript</th><td>Dynamic language for browsers and server-side runtimes</td><td>Enables interactive web apps; modern engines use JIT compilation</td><td>Web development and Node.js services</td></tr>
+            </tbody>
+          </table>
+          <p class="terminal-conclusion"><span>Conclusion:</span> Choose a language based on the problem: C for low-level control, C++ for performance, Java for portable applications, Python for rapid development and data work, and JavaScript for the web.</p>
+        </div>
+      </div>
     `
 
     : `
