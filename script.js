@@ -3246,6 +3246,19 @@ public class MarksValidation {
         finally { System.out.println("Finally block executed."); }
     }
 }` },
+      { title: "Demonstrating the finally Block", description: "Show that a finally block executes after exception handling, even when an exception occurs.", code: `public class FinallyDemo {
+    public static void main(String[] args) {
+        try {
+            int result = 10 / 0;
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("ArithmeticException handled.");
+        } finally {
+            System.out.println("Finally block always executes.");
+        }
+        System.out.println("Program continues.");
+    }
+}` },
       { title: "Reading and Writing Bytes with Streams", description: "Use InputStream and OutputStream to read bytes from an input source and write them to an output destination.", code: `import java.io.*;
 public class StreamBytes {
     public static void main(String[] args) throws IOException {
@@ -3877,12 +3890,15 @@ The line number may differ depending on the file layout.`,
   "10-7": `Invalid marks: Marks must be between 0 and 100.`,
   "10-8": `Invalid argument: Value cannot be negative.
 Finally block executed.`,
-  "10-9": `Hello, byte streams!`,
-  "10-10": `Displays the contents of input.txt byte by byte.`,
-  "10-11": `Text written to output.txt
+  "10-9": `ArithmeticException handled.
+Finally block always executes.
+Program continues.`,
+  "10-10": `Hello, byte streams!`,
+  "10-11": `Displays the contents of input.txt byte by byte.`,
+  "10-12": `Text written to output.txt
 Java byte output`,
-  "10-12": `File copied successfully.`,
-  "10-13": `Image copied successfully.`,
+  "10-13": `File copied successfully.`,
+  "10-14": `Image copied successfully.`,
   "11-0": `Enter text: Hello Java
 Hello Java`,
   "11-1": `Displays the text contained in input.txt.`,
